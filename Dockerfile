@@ -1,15 +1,16 @@
 FROM ubuntu:bionic
 
-ARG PYTHON_VER="3.8.1"
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -qq && \
-    apt-get install wget gcc make zlib1g-dev libssl1.1 -qq -y && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get upgrade -y && \
+    apt-get install --no-install-recommends -y -qq \
+    ca-certificates build-essential python3.6 python3-dev python3-pip \
+    software-properties-common
 
-RUN cd /tmp/ && \
-    wget https://www.python.org/ftp/python/${PYTHON_VER}/Python-${PYTHON_VER}.tgz && \
-    tar zxf Python-${PYTHON_VER}.tgz && \
-    cd Python-${PYTHON_VER} && \
-    ./configure --enable-optimizations --with-openssl=/usr/bin/openssl && \
-    make && \
-    make install
+RUN apt-get update -qq && \
+    add-apt-repository ppa:ubuntugis/ppa -y && \
+    apt-get update -qq && \
+    apt-get install -y --no-install-recommends gdal-bin
+
+RUN pip3 install -U pip
