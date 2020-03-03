@@ -1,3 +1,5 @@
 pandas
 fiona
 geopandas
+matplotlib
+jupyterlab
