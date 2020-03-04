@@ -6,7 +6,8 @@ RUN apt-get update -qq && \
     apt-get upgrade -y && \
     apt-get install --no-install-recommends -y -qq \
     ca-certificates build-essential python3.6 python3-dev python3-virtualenv \
-    software-properties-common dirmngr gpg-agent
+    software-properties-common dirmngr gpg-agent \
+    gfortran fonts-dejavu gcc
 
 # https://github.com/pypa/pip/issues/5599
 # https://pythonspeed.com/articles/activate-virtualenv-dockerfile/
@@ -29,6 +30,9 @@ RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD5
 
 RUN Rscript -e 'install.packages(c("sf", "dplyr"))'
 
+RUN mkdir src
+WORKDIR src/
+COPY . .
+
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt
-
